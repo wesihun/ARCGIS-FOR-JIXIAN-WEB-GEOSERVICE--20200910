@@ -59,7 +59,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "getDLTB", produces = "application/json;charset=utf-8")
-    public List<DLTB> getDLTB(String jsonMenue, String proviceCode) {//所有地类图斑
+    public List<DLTB> getDLTB(String jsonMenue, String proviceCode, String tablename) {//所有地类图斑
         ArrayList<Menue> menues = JSON.parseObject(jsonMenue, new TypeReference<ArrayList<Menue>>(){});
         String sql = "";
 
@@ -76,9 +76,9 @@ public class MyController {
         List<DLTB> list;
 
         if(proviceCode.equals("000000")){//集贤县
-            list = arcgisMapper.getDLTB(sql);
+            list = arcgisMapper.getDLTB(sql,tablename);
         }else {
-            list = arcgisMapper.getDLTBWidthCounctry(sql, proviceCode);
+            list = arcgisMapper.getDLTBWidthCounctry(sql, proviceCode,tablename);
         }
 
         return list;

@@ -13,6 +13,15 @@ public class SpecialMenue//装箱调查菜单
     private String tablename;
     private String shape;
     private List<SpecialMenue> subSpecialMenue;
+    private String physicstable;
+
+    public String getPhysicstable() {
+        return physicstable;
+    }
+
+    public void setPhysicstable(String physicstable) {
+        this.physicstable = physicstable;
+    }
 
     public String getTablename()
     {
