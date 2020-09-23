@@ -32,7 +32,7 @@ public class MyController {
     Config config;
 
     @RequestMapping(value = "getSecondCategoryCode", produces = "application/json;charset=utf-8")
-    public List<DltbArea> getSecondCategoryCode(String jsonMenue, String proviceCode) {//各地类面积
+    public List<DltbArea> getSecondCategoryCode(String jsonMenue, String proviceCode,String tablename) {//各地类面积
         ArrayList<Menue> menues = JSON.parseObject(jsonMenue, new TypeReference<ArrayList<Menue>>(){});
         String sql = "";
 
@@ -49,9 +49,9 @@ public class MyController {
         List<DltbArea> dltbAreas;
 
         if(proviceCode.equals("000000")){//集贤县
-            dltbAreas = arcgisMapper.getDltbArea(sql);
+            dltbAreas = arcgisMapper.getDltbArea(sql,tablename);
         }else {
-            dltbAreas = arcgisMapper.getDltbAreaByprovenceCode(sql, proviceCode);
+            dltbAreas = arcgisMapper.getDltbAreaByprovenceCode(sql, proviceCode,tablename);
         }
 
         return dltbAreas;
@@ -86,7 +86,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "exportReportPDF", produces = "application/json;charset=utf-8")
-    public String exportReportPDF(String jsonMenue, String proviceCode, String rightMenueName, String menuename){//导出报表
+    public String exportReportPDF(String jsonMenue, String proviceCode, String rightMenueName, String menuename,String tablename){//导出报表
         String firstFilename = config.getFile_dir();
         String lastFilename = new Date().getTime()+".pdf";
         String province = "集贤县";
@@ -108,9 +108,9 @@ public class MyController {
         }
 
         if(proviceCode.equals("000000")){//集贤县
-            dltbAreas = arcgisMapper.getDltbArea(sql); //分组统计面积
+            dltbAreas = arcgisMapper.getDltbArea(sql,tablename); //分组统计面积
         }else {
-            dltbAreas = arcgisMapper.getDltbAreaByprovenceCode(sql, proviceCode);
+            dltbAreas = arcgisMapper.getDltbAreaByprovenceCode(sql, proviceCode,tablename);
             coutry = rightMenueName;
         }
 
@@ -182,7 +182,7 @@ public class MyController {
 
 
     @RequestMapping(value = "getAllDltbAreaByProvinceCode", produces = "application/json;charset=utf-8")
-    public List<DltbArea> getAllDltbAreaByProvinceCode(String proviceCode) {//某行政区所有地类面积
+    public List<DltbArea> getAllDltbAreaByProvinceCode(String proviceCode,String tablename) {//某行政区所有地类面积
 
         List<DltbArea> dltbAreas;
 
@@ -190,7 +190,7 @@ public class MyController {
             proviceCode = "230521";
         }
 
-        dltbAreas = arcgisMapper.getAllDltbAreaByprovenceCode(proviceCode);
+        dltbAreas = arcgisMapper.getAllDltbAreaByprovenceCode(proviceCode,tablename);
 
         return dltbAreas;
 
