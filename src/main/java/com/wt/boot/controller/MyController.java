@@ -420,7 +420,15 @@ public class MyController {
 
 
 
+    @RequestMapping(value = "get_dltb_by_qsdwmc", produces = "application/json;charset=utf-8")
+    public List<DLTB> get_dltb_by_qsdwmc(String qsdwmc, String tablename)//根据权属单位名称查询地类，2021年4月16日需求
+    {
+        if(null==qsdwmc || qsdwmc.equals("") || null==tablename || tablename.equals("") ){return null;}
 
+        List<DLTB> dltb_list = arcgisMapper.getDLTB_by_qsdwmc(qsdwmc, tablename);
+
+        return dltb_list;
+    }
 
 
 

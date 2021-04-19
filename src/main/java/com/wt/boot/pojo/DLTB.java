@@ -10,6 +10,15 @@ public class DLTB
     private String qsdwmc;
     private float tbmj;
     private float area;
+    private String czcsxm;
+
+    public String getCzcsxm() {
+        return czcsxm;
+    }
+
+    public void setCzcsxm(String czcsxm) {
+        this.czcsxm = czcsxm;
+    }
 
     public float getArea()
     {

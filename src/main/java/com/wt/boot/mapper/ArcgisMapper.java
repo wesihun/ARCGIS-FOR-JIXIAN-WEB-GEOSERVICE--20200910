@@ -146,6 +146,8 @@ public interface ArcgisMapper
 
 
 
+    @Select("select * from ${tablename} where qsdwmc like '%${qsdwmc}%' ")
+    public List<DLTB> getDLTB_by_qsdwmc(@Param("qsdwmc") String qsdwmc, @Param("tablename") String tablename);//根类权属单位名称获取所有图斑，2021年4月16日需求
 
 
 
