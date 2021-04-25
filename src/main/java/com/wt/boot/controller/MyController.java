@@ -86,7 +86,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "exportReportPDF", produces = "application/json;charset=utf-8")
-    public String exportReportPDF(String jsonMenue, String proviceCode, String rightMenueName, String menuename,String tablename){//导出报表
+    public String exportReportPDF(String jsonMenue, String proviceCode, String rightMenueName, String menuename,String tablename, String unit){//导出报表
         String firstFilename = config.getFile_dir();
         String lastFilename = new Date().getTime()+".pdf";
         String province = "集贤县";
@@ -114,8 +114,8 @@ public class MyController {
             coutry = rightMenueName;
         }
 
-
-        this.createPDF(firstFilename+lastFilename ,province,coutry,DLCategory, dltbAreas);
+        dltbAreas = this.converte(dltbAreas, unit);//亩，平方米，公顷转换
+        this.createPDF(firstFilename+lastFilename ,province,coutry,DLCategory, dltbAreas, unit);
 
         String resutl = config.getReport_url()+":" + config.getPort() + "/" + lastFilename;
 
@@ -126,7 +126,26 @@ public class MyController {
 
     }
 
-    public void createPDF(String filename, String province, String coutry, String DLCategory, List<DltbArea> dltbAreas){//导出PDF报表
+    public List<DltbArea> converte(List<DltbArea> dltbAreas, String unit){ //亩，平方米，公顷转换
+        if (unit.equals("亩")) return dltbAreas;//默认亩
+
+        List<DltbArea> new_dltbAreas = new ArrayList<DltbArea>();
+
+        for(int i=0; i<dltbAreas.size();i++){
+            DltbArea dltbArea = dltbAreas.get(i);
+            if(unit.equals("平方米")){
+                dltbArea.setArea((float) (dltbArea.getArea()*666.67));
+                new_dltbAreas.add(dltbArea);
+            }else if(unit.equals("公顷")){
+                dltbArea.setArea((float) (dltbArea.getArea()*0.0666667));
+                new_dltbAreas.add(dltbArea);
+            }
+        }
+
+        return new_dltbAreas;
+    }
+
+    public void createPDF(String filename, String province, String coutry, String DLCategory, List<DltbArea> dltbAreas,String unit){//导出PDF报表
         Document document = new Document(PageSize.A4);
 
         try {
@@ -137,7 +156,7 @@ public class MyController {
             BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);//设置中文样式（不设置，中文将不会显示）
             Font fontChinese_title = new Font(bfChinese, 20, Font.BOLD, BaseColor.BLACK);
 
-            Paragraph paragraph_title = new Paragraph(province + coutry + DLCategory + "各地类面积报表（亩）", fontChinese_title);
+            Paragraph paragraph_title = new Paragraph(province + coutry + DLCategory + "各地类面积报表（" + unit +"）", fontChinese_title);
             paragraph_title.setAlignment(Paragraph.ALIGN_CENTER);
 
             document.add(paragraph_title);
