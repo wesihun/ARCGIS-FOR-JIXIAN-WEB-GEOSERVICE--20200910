@@ -175,6 +175,7 @@ public class MyController {
     }
 
     public PdfPTable createTable(PdfWriter writer, List<DltbArea> dltbAreas) throws Exception{
+        float count = 0;//记录合计
         BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);//设置中文样式（不设置，中文将不会显示）
         Font fontChinese_title = new Font(bfChinese, 20, Font.BOLD, BaseColor.BLACK);
         Font cellFontsize = new Font(bfChinese, 12, Font.NORMAL, BaseColor.BLACK);
@@ -185,6 +186,8 @@ public class MyController {
 
         PdfPCell cell_1 = new PdfPCell(new Paragraph("地类名称",cellFontsize));
         PdfPCell cell_2 = new PdfPCell(new Paragraph("面积",cellFontsize));
+        table.addCell(cell_1);
+        table.addCell(cell_2);
 
         for(int i=0; i<dltbAreas.size(); i++){
             DltbArea dltbArea = dltbAreas.get(i);
@@ -194,7 +197,14 @@ public class MyController {
 
             table.addCell(cell_3);
             table.addCell(cell_4);
+
+            count += dltbArea.getArea();
         }
+
+        PdfPCell cell_5 = new PdfPCell(new Paragraph("合计",cellFontsize));
+        PdfPCell cell_6 = new PdfPCell(new Paragraph(String.valueOf(count),cellFontsize));
+        table.addCell(cell_5);
+        table.addCell(cell_6);
 
         return table;
     }
